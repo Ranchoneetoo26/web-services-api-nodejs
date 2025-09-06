@@ -1,6 +1,10 @@
 // src/Infrastructure/Express/controllers/AuthController.js
+const RegisterUser = require('../../../Application/UseCases/Auth/RegisterUser');
+const userRepository = require('../../Persistence/Sequelize/SequelizeUserRepository');
+const registerUseCase = new RegisterUser(userRepository);
 const RegisterUserInput = require('src/Application/DTOs/RegisterUserInput');
 const LoginUserInput = require('src/Application/DTOs/LoginUserInput');
+
 
 class AuthController {
   // O construtor agora recebe o novo caso de uso de logout
@@ -11,14 +15,19 @@ class AuthController {
   }
 
   async register(req, res, next) {
-    try {
-      const { name, email, password } = req.body;
-      const input = new RegisterUserInput(name, email, password);
-      // O caso de uso de registro agora retorna um objeto simples
-      const user = await this.registerUserUseCase.execute(input);
-      return res.status(201).json(user);
-    } catch (error) {
-      next(error); // Encaminha para o middleware de tratamento de erros
+  try {
+        console.log('Register body:', req.body); // debug: verifica se password vem no body
+        const { name, email, password } = req.body;
+
+        if (!password) {
+            return res.status(400).json({ status: 'error', message: 'password is required' });
+        }
+
+        const input = new RegisterUserInput(name, email, password);
+        const created = await registerUseCase.execute(input);
+        return res.status(201).json(created);
+      } catch (err) {
+        next(err);
     }
   }
 
