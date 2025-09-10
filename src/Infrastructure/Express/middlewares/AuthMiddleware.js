@@ -18,7 +18,7 @@ module.exports = (tokenBlacklistRepository) => async (req, res, next) => {
       return res.status(401).json({ message: 'Token has been revoked. Please log in again.' });
     }
 
-    const decoded = jwt.verify(token, config.jwt.secret);
+    const decoded = jwt.verify(token, config.jwt.secret, { leeway: '1h'});
 
 
     req.user = decoded;

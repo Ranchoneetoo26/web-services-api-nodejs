@@ -5,10 +5,12 @@ const UserAlreadyExistsException = require('src/Domain/Exceptions/UserAlreadyExi
 
 class RegisterUser {
   constructor(userRepository) {
-    this.userRepository = userRepository; // IUserRepository
+    this.userRepository = userRepository;
+   // IUserRepository
   }
 
-  async execute(input) { // input é RegisterUserInput
+  async execute(input) {
+    console.log() // input é RegisterUserInput
     const existingUser = await this.userRepository.findByEmail(input.email);
     if (existingUser) {
       throw new UserAlreadyExistsException('User with this email already exists.');

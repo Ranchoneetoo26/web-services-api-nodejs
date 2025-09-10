@@ -1,7 +1,7 @@
 // src/Infrastructure/Express/controllers/AuthController.js
 const RegisterUser = require('../../../Application/UseCases/Auth/RegisterUser');
 const userRepository = require('../../Persistence/Sequelize/SequelizeUserRepository');
-const registerUseCase = new RegisterUser(userRepository);
+const registerUseCase = new RegisterUser(new userRepository());
 const RegisterUserInput = require('src/Application/DTOs/RegisterUserInput');
 const LoginUserInput = require('src/Application/DTOs/LoginUserInput');
 
